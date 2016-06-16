@@ -13,24 +13,26 @@ def func(text, post_id):
 
 	questions = []
 	stop = stopwords.words('english')
-
 	
 	x = (text.lower()).split(' ')
 
 	soup = BeautifulSoup(text)
 	text = soup.getText()
 
-	for each_word in text.split():
-		s = ''
-		if each_word not in stop:
-			s = s + each_word + ' '
-
-	data[post_id].append(text) 
+	#print text.encode('utf-8')
+	# s = ''
+	# for each_word in text.split():
+	# 	if each_word.lower() not in stop:
+	# 		s = s + each_word + ' '
+		
+	#print s.encode('utf-8')
+	#data[post_id].append(s.strip()) 
+	data[post_id].append(text.strip()) 
 
 def main():
 
 	# python pre_processing.py data/sample_questions_from_AXC.xls data/sample_answer_from_AXC.xls data/sample_posts_upvotes_downvotes.xls > out.csv
-	
+
 	# questions
 	xl_workbook = xlrd.open_workbook(sys.argv[1])
 	xl_sheet = xl_workbook.sheet_by_index(0)
@@ -84,14 +86,14 @@ def main():
 		data[post_id].append(dvote)
 
 	for key in data:
-		print key, ",",
+	 	print key, "\t",
 		
-	 	for v in data[key]:
-	 		try:
-	 			print v, ",",
-	 		except:
-	 			print v.encode('utf-8'), ",",
-	 	print
+	  	for v in data[key]:
+	  		try:
+	  			print v, "\t",
+	  		except:
+	  			print v.encode('utf-8'), "\t",
+	  	print
 
 
 if __name__ == '__main__':
