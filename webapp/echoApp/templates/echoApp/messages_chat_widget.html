@@ -335,12 +335,12 @@
                 <h5> Were the questions suggested helpful? </h5>
                 <div class="row"> 
                     <div class="col-md-3 col-lg-3">
-                        <a type="button" data-dismiss="modal" class="btn btn-success">Yes</a>
+                        <a type="button" data-dismiss="modal" class="btn btn-success" href="#yesModal" data-toggle="modal" data-target="#yesModal">Yes</a>
                     </div>
                     <div class="col-md-2 col-lg-2">
                     </div>
                     <div class="col-md-3 col-lg-3">
-                        <a type="button" data-dismiss="modal" class="btn btn-danger">No</a>
+                        <a type="button" data-dismiss="modal" class="btn btn-danger" href="#noModal" data-toggle="modal" data-target="#noModal">No</a>
                     </div>
                 </div>
             </div>
@@ -350,7 +350,47 @@
       </div>
     </div>
 
+<div class="container">
+      <div class="modal fade" id="noModal" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row"> 
+                    <div class="col-md-3 col-lg-3">
+                        <a type="button" data-dismiss="modal" class="btn btn-success">Take me to Superbot</a>
+                    </div>
+                    <div class="col-md-2 col-lg-2">
+                    </div>
+                    <div class="col-md-3 col-lg-3">
+                        <a type="button" data-dismiss="modal" class="btn btn-danger">Talk to Expert</a>
+                    </div>
+                </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
 
+<div class="container">
+      <div class="modal fade" id="yesModal" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+                <h4> Yay! :D</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <img src="etty.jpg" alt="Enjoyed talking to you :)">
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
 
 <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
