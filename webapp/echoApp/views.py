@@ -20,7 +20,7 @@ from chatterbot.training.trainers import ChatterBotCorpusTrainer
 
 # Create your views here.
 question_list = []
-chatbot = ChatBot("Charlie")
+chatbot = ChatBot("Echo")
 chatbot.set_trainer(ChatterBotCorpusTrainer)
 chatbot.train("chatterbot.corpus.english")
 chatbot.train("chatterbot.corpus.english.greetings")
@@ -36,8 +36,11 @@ def home(request):
 			question_list.append(question)
 			bot_response = chatbot.get_response(question)
 			question_list.append(bot_response)
-			print question_list
-			return render(request, 'echoApp/messages_chat_widget.html', {'message_form':message_form, 'question':question, 'bot_response':bot_response, 'question_list':question_list})
+			modal = True
+			if modal:
+				return render(request, 'echoApp/messages_chat_widget.html', {'message_form':message_form, 'question':question, 'bot_response':bot_response, 'question_list':question_list, 'modal':modal})
+			else:
+				return render(request, 'echoApp/messages_chat_widget.html', {'message_form':message_form, 'question':question, 'bot_response':bot_response, 'question_list':question_list})
 	else:
 		message_form = MessageForm()
 		question_list = []
