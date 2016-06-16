@@ -105,7 +105,7 @@
 }
 #id_message {
     width: 100%;
-    height: 50px;
+    height: 40px;
 }
 .speech:before {
     content: "";
@@ -204,9 +204,19 @@
 <body>
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <div class="container">
+
+    <h3>
+        Echoo..!<br/>
+
+    </h3>
+    <p>A simple bot to chat to about your issues.<br />
+                Be it TurboTax or QuickBooks or Mint, <a href="#">Echo</a> will try its best to come up with an answer.<br/>
+
     <div class="col-md-12 col-lg-6">
         <div class="panel">
         	<!--Heading-->
+
+
     		<div class="panel-heading">
     			<div class="panel-control">
     				<div class="btn-group">
@@ -224,150 +234,44 @@
     			</div>
     			<h3 class="panel-title">Chat</h3>
     		</div>
+
+
     
     		<!--Widget body-->
     		<div id="demo-chat-body" class="collapse in">
     			<div class="nano has-scrollbar" style="height:380px">
     				<div class="nano-content pad-all" tabindex="0" style="right: -17px;">
     					<ul class="list-unstyled media-block">
-    						<!-- <li class="mar-btm">
-    							<div class="media-left">
-    								<img src="http://bootdey.com/img/Content/avatar/avatar1.png" class="img-circle img-sm" alt="Profile Picture">
-    							</div>
-    							<div class="media-body pad-hor">
-    								<div class="speech">
-    									<a href="#" class="media-heading">John Doe</a>
-    									<p>Hello Lucy, how can I help you today ?</p>
-    									<p class="speech-time">
-    									<i class="fa fa-clock-o fa-fw"></i>09:23AM
-    									</p>
-    								</div>
-    							</div>
-    						</li>
-    						<li class="mar-btm">
-    							<div class="media-right">
-    								<img src="http://bootdey.com/img/Content/avatar/avatar2.png" class="img-circle img-sm" alt="Profile Picture">
-    							</div>
-    							<div class="media-body pad-hor speech-right">
-    								<div class="speech">
-    									<a href="#" class="media-heading">Lucy Doe</a>
-    									<p>Hi, I want to buy a new shoes.</p>
-    									<p class="speech-time">
-    										<i class="fa fa-clock-o fa-fw"></i> 09:23AM
-    									</p>
-    								</div>
-    							</div>
-    						</li>
-    						<li class="mar-btm">
-    							<div class="media-left">
-    								<img src="http://bootdey.com/img/Content/avatar/avatar1.png" class="img-circle img-sm" alt="Profile Picture">
-    							</div>
-    							<div class="media-body pad-hor">
-    								<div class="speech">
-    									<a href="#" class="media-heading">John Doe</a>
-    									<p>Shipment is free. You\'ll get your shoes tomorrow!</p>
-    									<p class="speech-time">
-    										<i class="fa fa-clock-o fa-fw"></i> 09:25
-    									</p>
-    								</div>
-    							</div>
-    						</li>
-    						<li class="mar-btm">
-    							<div class="media-right">
-    								<img src="http://bootdey.com/img/Content/avatar/avatar2.png" class="img-circle img-sm" alt="Profile Picture">
-    							</div>
-    							<div class="media-body pad-hor speech-right">
-    								<div class="speech">
-    									<a href="#" class="media-heading">Lucy Doe</a>
-    									<p>Wow, that\'s great!</p>
-    									<p class="speech-time">
-    										<i class="fa fa-clock-o fa-fw"></i> 09:27
-    									</p>
-    								</div>
-    							</div>
-    						</li>
-    						<li class="mar-btm">
-    							<div class="media-right">
-    								<img src="http://bootdey.com/img/Content/avatar/avatar2.png" class="img-circle img-sm" alt="Profile Picture">
-    							</div>
-    							<div class="media-body pad-hor speech-right">
-    								<div class="speech">
-    									<a href="#" class="media-heading">Lucy Doe</a>
-    									<p>Ok. Thanks for the answer. Appreciated.</p>
-    									<p class="speech-time">
-    									<i class="fa fa-clock-o fa-fw"></i> 09:28
-    									</p>
-    								</div>
-    							</div>
-    						</li>
-    						<li class="mar-btm">
-    							<div class="media-left">
-    								<img src="http://bootdey.com/img/Content/avatar/avatar1.png" class="img-circle img-sm" alt="Profile Picture">
-    							</div>
-    							<div class="media-body pad-hor">
-    								<div class="speech">
-    									<a href="#" class="media-heading">John Doe</a>
-    									<p>You are welcome! <br> Is there anything else I can do for you today?</p>
-    									<p class="speech-time">
-    										<i class="fa fa-clock-o fa-fw"></i> 09:30
-    									</p>
-    								</div>
-    							</div>
-    						</li>
-    						<li class="mar-btm">
-    							<div class="media-right">
-    								<img src="http://bootdey.com/img/Content/avatar/avatar2.png" class="img-circle img-sm" alt="Profile Picture">
-    							</div>
-    							<div class="media-body pad-hor speech-right">
-    								<div class="speech">
-    									<a href="#" class="media-heading">Lucy Doe</a>
-    									<p>Nope, That\'s it.</p>
-    									<p class="speech-time">
-    										<i class="fa fa-clock-o fa-fw"></i> 09:31
-    									</p>
-    								</div>
-    							</div>
-    						</li>
-    						<li class="mar-btm">
-    							<div class="media-left">
-    								<img src="http://bootdey.com/img/Content/avatar/avatar1.png" class="img-circle img-sm" alt="Profile Picture">
-    							</div>
-    							<div class="media-body pad-hor">
-    								<div class="speech">
-    									<a href="#" class="media-heading">John Doe</a>
-    									<p>Thank you for contacting us today</p>
-    									<p class="speech-time">
-    										<i class="fa fa-clock-o fa-fw"></i> 09:32
-    									</p>
-    								</div>
-    							</div>
-    						</li> -->
-                            {% if question %}
-                                <li class="mar-btm">
-                                    <div class="media-right">
-                                        <img src="http://bootdey.com/img/Content/avatar/avatar2.png" class="img-circle img-sm" alt="Profile Picture">
-                                    </div>
-                                    <div class="media-body pad-hor speech-right">
-                                        <div class="speech">
-                                            <a href="#" class="media-heading">You</a>
-                                            <p> {{ question }}</p>
+
+                            
+
+                            {% for message in question_list %} 
+                                {% if forloop.counter|divisibleby:"2" %}
+                                    <li class="mar-btm">
+                                        <div class="media-right">
+                                            <img src="http://bootdey.com/img/Content/avatar/avatar2.png" class="img-circle img-sm" alt="Profile Picture">
                                         </div>
-                                    </div>
-                                </li>
-                            {% endif %}
-                            {% if bot_response %}
-                                <li class="mar-btm">
-                                <div class="media-left">
-                                    <img src="http://bootdey.com/img/Content/avatar/avatar1.png" class="img-circle img-sm" alt="Profile Picture">
-                                </div>
-                                <div class="media-body pad-hor">
-                                    <div class="speech">
-                                        <a href="#" class="media-heading">Chatbot</a>
-                                        <p>{{ bot_response }}</p>
-                                    </div>
-                                </div>
-                            </li> 
-                            {% endif %}
+                                        <div class="media-body pad-hor speech-right">
+                                            <div class="speech">
+                                                <a href="#" class="media-heading">You</a>
+                                                <p> {{ message }}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                {% else %}
+                                    <li class="mar-btm">
+                                        <div class="media-left">
+                                            <img src="http://bootdey.com/img/Content/avatar/avatar1.png" class="img-circle img-sm" alt="Profile Picture">
+                                        </div>
+                                        <div class="media-body pad-hor">
+                                            <div class="speech">
+                                                <a href="#" class="media-heading">Chatbot</a>
+                                                <p>{{ message }}</p>
+                                            </div>
+                                        </div>
+                                    </li> 
+                                {% endif %}
+                            {% endfor %}
     					</ul>
     				</div>
     			<div class="nano-pane"><div class="nano-slider" style="height: 141px; transform: translate(0px, 0px);"></div></div></div>

@@ -15,19 +15,31 @@ from django.core.context_processors import csrf
 from django import forms
 from django.contrib.auth.decorators import login_required
 from echoApp.forms import MessageForm
+from chatterbot import ChatBot
+from chatterbot.training.trainers import ChatterBotCorpusTrainer
 
 # Create your views here.
+question_list = []
+chatbot = ChatBot("Charlie")
+chatbot.set_trainer(ChatterBotCorpusTrainer)
+chatbot.train("chatterbot.corpus.english")
+chatbot.train("chatterbot.corpus.english.greetings")
+chatbot.train("chatterbot.corpus.english.conversations")
 
 def home(request):
-	print request.method
+	global chatbot
+	global question_list
 	if request.method == 'POST':
 		message_form = MessageForm(request.POST)
 		if message_form.is_valid():
-			print "here"
 			question = message_form.cleaned_data['message']
-			bot_response = 'random bot_response'
-			print question
-			return render(request, 'echoApp/messages_chat_widget.html', {'message_form':message_form, 'question':question, 'bot_response':bot_response})
+			question_list.append(question)
+			bot_response = chatbot.get_response(question)
+			question_list.append(bot_response)
+			print question_list
+			return render(request, 'echoApp/messages_chat_widget.html', {'message_form':message_form, 'question':question, 'bot_response':bot_response, 'question_list':question_list})
 	else:
 		message_form = MessageForm()
-	return render(request, 'echoApp/messages_chat_widget.html',{'message_form':message_form})
+		question_list = []
+		question_list.append('Hello! My name is Echo. Please type in what would you like to ask.')
+	return render(request, 'echoApp/messages_chat_widget.html',{'message_form':message_form, 'question_list':question_list})
