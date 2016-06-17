@@ -9,28 +9,29 @@ def read_corpus(fname, tokens_only=False):
                 # For training data, add tags
                 yield gensim.models.doc2vec.TaggedDocument(gensim.utils.simple_preprocess(line), [i])
 
- 
-corpus = list(read_corpus("intuit_questions.txt"))
-# model = gensim.models.doc2vec.Doc2Vec(size=50, min_count=2, alpha=0.025, min_alpha=0.025)
 
-model =  gensim.models.doc2vec.Doc2Vec.load("Intuit_Model.doc2vec")
-# model.build_vocab(corpus)
-# #model.sort_vocab()
+def doc_2_vec(text):
+    corpus = list(read_corpus("intuit_questions.txt"))
+    # model = gensim.models.doc2vec.Doc2Vec(size=50, min_count=2, alpha=0.025, min_alpha=0.025)
 
-# for epoch in range(10):
-#     model.train(corpus)
-#     model.alpha -= 0.002  # decrease the learning rate
-#     model.min_alpha = model.alpha  # fix the learning rate, no decay
+    # #model =  gensim.models.doc2vec.Doc2Vec.load("Intuit_Model.doc2vec")
+    # model.build_vocab(corpus)
+    # #model.sort_vocab()
 
-# inferred_vector = model.infer_vector("What if I make a mistake".split())
-# sims = model.docvecs.most_similar([inferred_vector], topn=2)#len(model.docvecs))
-# #print sims
+    # for epoch in range(10):
+    #     model.train(corpus)
+    #     model.alpha -= 0.002  # decrease the learning rate
+    #     model.min_alpha = model.alpha  # fix the learning rate, no decay
 
-# model.save("Intuit_Model.doc2vec");
+    # inferred_vector = model.infer_vector("What if I make a mistake".split())
+    # sims = model.docvecs.most_similar([inferred_vector], topn=2)#len(model.docvecs))
+    # #print sims
 
-model =  gensim.models.doc2vec.Doc2Vec.load("Intuit_Model.doc2vec")
-inferred_vector = model.infer_vector("I am unable to fill my tax form".split())
-sims = model.docvecs.most_similar([inferred_vector], topn=2)#len(model.docvecs))
+    # model.save("Intuit_Model.doc2vec");
+
+    model =  gensim.models.doc2vec.Doc2Vec.load("Intuit_Model.doc2vec")
+    inferred_vector = model.infer_vector(text.split())
+    sims = model.docvecs.most_similar([inferred_vector], topn=2)#len(model.docvecs))
 #print sims
 
 # model.save("Intuit_Model.doc2vec");

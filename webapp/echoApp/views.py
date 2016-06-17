@@ -24,6 +24,7 @@ from similarity import jaccard, kullback_leibler, hellinger
 import pickle
 import gensim
 import question_similarity
+import sol
 
 
 
@@ -34,7 +35,8 @@ chatbot.set_trainer(ChatterBotCorpusTrainer)
 chatbot.train("chatterbot.corpus.english")
 chatbot.train("chatterbot.corpus.english.greetings")
 chatbot.train("chatterbot.corpus.english.conversations")
-
+qa = question_similarity.QASimilarityDoc2Vec(model_name='/Users/prane1/Hackathon/qandabot/webapp/echoApp/intuit_temp.doc2vec',filename={'question':'/Users/prane1/Hackathon/qandabot/webapp/echoApp/intuit_questions.txt', 'answer':'/Users/prane1/Hackathon/qandabot/webapp/echoApp/intuit_answers.txt'})
+                
 
 
 def home(request):
@@ -54,12 +56,13 @@ def home(request):
                 bot_response = 'It seems you have a problem with Turbo Tax or filing your taxes. I have had a look at some previous questions, see if they might help!'
                 question_list.append(bot_response)
                 question_dict = similarity(temp_question)
-                qa = question_similarity.QASimilarityDoc2Vec(model_name='/Users/prane1/Hackathon/qandabot/webapp/echoApp/intuit_temp.doc2vec',filename={'question':'/Users/prane1/Hackathon/qandabot/webapp/echoApp/intuit_questions.txt', 'answer':'/Users/prane1/Hackathon/qandabot/webapp/echoApp/intuit_answers.txt'})
                 sim_qa = qa.get_most_similar_qa(temp_question, topn=2)
                 sim_dict = {}
                 for s in sim_qa:
                     sim_dict[s[0]] = s[1]
-                return render(request, 'echoApp/messages_chat_widget.html', {'message_form':message_form, 'question':question, 'bot_response':bot_response, 'question_list':question_list, 'modal':modal, 'question_dict':question_dict, 'sim_dict':sim_dict})
+                #call link list
+                linkList  = sol.get_links(temp_question)
+                return render(request, 'echoApp/messages_chat_widget.html', {'message_form':message_form, 'question':question, 'bot_response':bot_response, 'question_list':question_list, 'modal':modal, 'question_dict':question_dict, 'sim_dict':sim_dict, 'linkList':linkList})
             else:
                 question_list.append(bot_response)
                 return render(request, 'echoApp/messages_chat_widget.html', {'message_form':message_form, 'question':question, 'bot_response':bot_response, 'question_list':question_list})
