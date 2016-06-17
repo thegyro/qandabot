@@ -25,6 +25,7 @@ import pickle
 import gensim
 import question_similarity
 import sol
+import rnn_generator as rg
 
 
 
@@ -36,7 +37,12 @@ chatbot.train("chatterbot.corpus.english")
 chatbot.train("chatterbot.corpus.english.greetings")
 chatbot.train("chatterbot.corpus.english.conversations")
 qa = question_similarity.QASimilarityDoc2Vec(model_name='/Users/prane1/Hackathon/qandabot/webapp/echoApp/intuit_temp.doc2vec',filename={'question':'/Users/prane1/Hackathon/qandabot/webapp/echoApp/intuit_questions.txt', 'answer':'/Users/prane1/Hackathon/qandabot/webapp/echoApp/intuit_answers.txt'})
-                
+q_lda = ldamodel.LdaModel.load('/Users/prane1/Hackathon/qandabot/webapp/echoApp/q_LDA_stop_20')
+dictionary = Dictionary.load('/Users/prane1/Hackathon/qandabot/webapp/echoApp/q_dictionary')
+corpus = corpora.MmCorpus('/Users/prane1/Hackathon/qandabot/webapp/echoApp/corpus')
+question_file = open("/Users/prane1/Hackathon/qandabot/webapp/echoApp/questions")
+answer_file = open("/Users/prane1/Hackathon/qandabot/webapp/echoApp/answers") 
+rnn = rg.RNNGenerator("/Users/prane1/Hackathon/qandabot/webapp/echoApp/intuit_weights.h5", open('/Users/prane1/Hackathon/qandabot/webapp/echoApp/intuit_data.txt').read())                
 
 
 def home(request):
@@ -62,7 +68,12 @@ def home(request):
                     sim_dict[s[0]] = s[1]
                 #call link list
                 linkList  = sol.get_links(temp_question)
-                return render(request, 'echoApp/messages_chat_widget.html', {'message_form':message_form, 'question':question, 'bot_response':bot_response, 'question_list':question_list, 'modal':modal, 'question_dict':question_dict, 'sim_dict':sim_dict, 'linkList':linkList})
+                rnn_list = []
+                for i in range(5):
+                    rnn_result = rnn.generate()
+                    rnn_result = rnn_result.decode('utf-8')
+                    rnn_list.append(rnn_result)
+                return render(request, 'echoApp/messages_chat_widget.html', {'message_form':message_form, 'question':question, 'bot_response':bot_response, 'question_list':question_list, 'modal':modal, 'question_dict':question_dict, 'sim_dict':sim_dict, 'linkList':linkList, 'temp_question':temp_question, 'rnn_list':rnn_list})
             else:
                 question_list.append(bot_response)
                 return render(request, 'echoApp/messages_chat_widget.html', {'message_form':message_form, 'question':question, 'bot_response':bot_response, 'question_list':question_list})
@@ -72,42 +83,19 @@ def home(request):
         question_list.append('Hello! My name is Echo. Please type in what would you like to ask.')
     return render(request, 'echoApp/messages_chat_widget.html',{'message_form':message_form, 'question_list':question_list})
 
-def superbot(request):
-    global chatbot
-    global question_list
-    if request.method == 'POST':
-        message_form = MessageForm(request.POST)
-        if message_form.is_valid():
-            question = message_form.cleaned_data['message']
-            question_list.append(question)
-            bot_response = chatbot.get_response(question)
-            
-            temp_question = question.lower()
-            tax_words = ['tax', 'form', 'problem', 'issue', 'turbo', 'file', 'return']
-            if [w for w in tax_words if w in temp_question]:
-                modal = True
-                bot_response = 'It seems you have a problem with Turbo Tax or filing your taxes. I have had a look at some previous questions, see if they might help!'
-                question_list.append(bot_response)
-                question_dict = similarity(temp_question)
-                return render(request, 'echoApp/messages_chat_widget.html', {'message_form':message_form, 'question':question, 'bot_response':bot_response, 'question_list':question_list, 'modal':modal, 'question_dict':question_dict})
-            else:
-                question_list.append(bot_response)
-                return render(request, 'echoApp/messages_chat_widget.html', {'message_form':message_form, 'question':question, 'bot_response':bot_response, 'question_list':question_list})
-    else:
-        message_form = MessageForm()
-        question_list = []
-        question_list.append('Hello! I am superbot.')
-    return render(request, 'echoApp/messages_chat_widget.html',{'message_form':message_form, 'question_list':question_list})
+
+# def superbot(request,temp_question):
+#     list_question = question_list
+#     is_superbot = True
+#     rnn_result = rnn.generate()
+
+#     return HttpResponse("d")
 
 def similarity(query):
 
     # GDRAT_abs_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'media/documents/GDRAT.xls')
     # loading starts
-    q_lda = ldamodel.LdaModel.load('/Users/prane1/Hackathon/qandabot/webapp/echoApp/q_LDA_stop_20')
-    dictionary = Dictionary.load('/Users/prane1/Hackathon/qandabot/webapp/echoApp/q_dictionary')
-    corpus = corpora.MmCorpus('/Users/prane1/Hackathon/qandabot/webapp/echoApp/corpus')
-    question_file = open("/Users/prane1/Hackathon/qandabot/webapp/echoApp/questions")
-    answer_file = open("/Users/prane1/Hackathon/qandabot/webapp/echoApp/answers") 
+    
     q = pickle.load(question_file)
     a = pickle.load(answer_file)
     q_lsi = models.LsiModel.load('/Users/prane1/Hackathon/qandabot/webapp/echoApp/q_LSI_stop_20')

@@ -275,6 +275,19 @@
                                     </li> 
                                 {% endif %}
                             {% endfor %}
+                            <!-- {% if is_superbot %}
+                                <li class="mar-btm">
+                                    <div class="media-left">
+                                        <img src="http://bootdey.com/img/Content/avatar/avatar1.png" class="img-circle img-sm" alt="Profile Picture">
+                                    </div>
+                                    <div class="media-body pad-hor">
+                                        <div class="speech">
+                                            <a href="#" class="media-heading">Superbot</a>
+                                            <p>{{ superbot_message }}</p>
+                                        </div>
+                                    </div>
+                                </li> 
+                            {% endif %} -->
     					</ul>
     				</div>
     			<div class="nano-pane"><div class="nano-slider" style="height: 141px; transform: translate(0px, 0px);"></div></div></div>
@@ -398,13 +411,37 @@
             <div class="modal-body">
                 <div class="row"> 
                     <div class="col-md-3 col-lg-3">
-                        <a type="button" data-dismiss="modal" class="btn btn-info" href="superbot/">Take me to Superbot!</a>
+                        <a type="button" data-dismiss="modal" class="btn btn-info" href="#superbot" data-toggle="modal" data-target="#superbot">Take me to Superbot!</a>
+                        <!-- <a type="button" data-dismiss="modal" class="btn btn-info" href="/superbot/{{temp_question}}">Take me to Superbot!</a> -->
                     </div>
                     <div class="col-md-2 col-lg-2">
                     </div>
                     <div class="col-md-3 col-lg-3">
                         <a type="button" data-dismiss="modal" class="btn btn-warning">Talk to Expert</a>
                     </div>
+                </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
+<div class="container">
+      <div class="modal fade" id="superbot" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+                <h4>This is what our superbot recommends</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row"> 
+                    {% for rnn_result in rnn_list %} 
+                    <div class="col-md-1 col-lg-1">
+                    </div>
+                    <p> {{rnn_result}} </p>
+                    {% endfor %}
                 </div>
             </div>
           </div>
