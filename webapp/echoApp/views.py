@@ -43,7 +43,7 @@ def home(request):
 		if message_form.is_valid():
 			question = message_form.cleaned_data['message']
 			if 'tax' in question or 'form' in question:
-				similarity()
+				similarity(question)
 
 			question_list.append(question)
 			bot_response = chatbot.get_response(question)
@@ -61,18 +61,19 @@ def home(request):
 
 def similarity(query):
 
+	# GDRAT_abs_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'media/documents/GDRAT.xls')
 	# loading starts
-	q_lda = ldamodel.LdaModel.load('q_LDA_stop_20')
-	dictionary = Dictionary.load('q_dictionary')
-	corpus = corpora.MmCorpus('corpus')
-	question_file = open("questions")
-	answer_file = open("answers") 
+	q_lda = ldamodel.LdaModel.load('/Users/prane1/Hackathon/qandabot/webapp/echoApp/q_LDA_stop_20')
+	dictionary = Dictionary.load('/Users/prane1/Hackathon/qandabot/webapp/echoApp/q_dictionary')
+	corpus = corpora.MmCorpus('/Users/prane1/Hackathon/qandabot/webapp/echoApp/corpus')
+	question_file = open("/Users/prane1/Hackathon/qandabot/webapp/echoApp/questions")
+	answer_file = open("/Users/prane1/Hackathon/qandabot/webapp/echoApp/answers") 
 	q = pickle.load(question_file)
 	a = pickle.load(answer_file)
-	q_lsi = models.LsiModel.load('q_LSI_stop_20')
-	index = similarities.MatrixSimilarity.load('lsi_index')
-	lsi_tf = models.LsiModel.load('lsi_tf')
-	index_tf = similarities.MatrixSimilarity.load('lsi_tf_index')
+	q_lsi = models.LsiModel.load('/Users/prane1/Hackathon/qandabot/webapp/echoApp/q_LSI_stop_20')
+	index = similarities.MatrixSimilarity.load('/Users/prane1/Hackathon/qandabot/webapp/echoApp/lsi_index')
+	lsi_tf = models.LsiModel.load('/Users/prane1/Hackathon/qandabot/webapp/echoApp/lsi_tf')
+	index_tf = similarities.MatrixSimilarity.load('/Users/prane1/Hackathon/qandabot/webapp/echoApp/lsi_tf_index')
 
 	# loading ends
 	query = dictionary.doc2bow(query.lower().split())
@@ -93,14 +94,17 @@ def similarity(query):
 
 
 	vec_query = lsi_tf[query]
-	sims = index[vec_query]
+	sims = index_tf[vec_query]
 	sims = sorted(enumerate(sims), key=lambda item: -item[1])
 
-	print(q[sims[0][0]], q[sims[1][0]])
+	print(' '.join(q[sims[0][0]]), ' '.join(q[sims[1][0]]), ' '.join(q[sims[2][0]]))
+	print(' '.join(a[sims[0][0]]), ' '.join(a[sims[1][0]]), ' '.join(a[sims[2][0]]))
 	print "\n"
 
 	vec_query = q_lsi[query]
 	sims = index[vec_query]
 	sims = sorted(enumerate(sims), key=lambda item: -item[1])
 
-	print(q[sims[0][0]], q[sims[1][0]])
+	print(' '.join(q[sims[0][0]]), ' '.join(q[sims[1][0]]), ' '.join(q[sims[2][0]]))
+	print(' '.join(a[sims[0][0]]), ' '.join(a[sims[1][0]]), ' '.join(a[sims[2][0]]))
+
