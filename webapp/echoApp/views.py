@@ -44,12 +44,17 @@ def home(request):
 			question = message_form.cleaned_data['message']
 			question_list.append(question)
 			bot_response = chatbot.get_response(question)
-			question_list.append(bot_response)
-			if 'tax' in question or 'form' in question:
+			
+			temp_question = question.lower()
+			tax_words = ['tax', 'form', 'problem', 'issue', 'turbo', 'file', 'return']
+			if [w for w in tax_words if w in temp_question]:
 				modal = True
-				question_dict = similarity(question)
+				bot_response = 'It seems you have a problem with Turbo Tax or filing your taxes. I have had a look at some previous questions, see if they might help!'
+				question_list.append(bot_response)
+				question_dict = similarity(temp_question)
 				return render(request, 'echoApp/messages_chat_widget.html', {'message_form':message_form, 'question':question, 'bot_response':bot_response, 'question_list':question_list, 'modal':modal, 'question_dict':question_dict})
 			else:
+				question_list.append(bot_response)
 				return render(request, 'echoApp/messages_chat_widget.html', {'message_form':message_form, 'question':question, 'bot_response':bot_response, 'question_list':question_list})
 	else:
 		message_form = MessageForm()
@@ -84,7 +89,7 @@ def similarity(query):
 	sims = index_tf[vec_query]
 	sims = sorted(enumerate(sims), key=lambda item: -item[1])	
 	while len(question_dict) is not 2:
-		if ' '.join(a[sims[i][0]]) is not ' ':
+		if ' '.join(a[sims[i][0]]) is not ' ' and ' '.join(a[sims[i][0]]) is not '' and ' '.join(a[sims[i][0]]) is not None:
 			question_dict[' '.join(q[sims[i][0]])] = ' '.join(a[sims[i][0]])
 		i += 1
 
@@ -98,7 +103,7 @@ def similarity(query):
 			i += 1
 			continue
 
-		if ' '.join(a[sims[i][0]]) is not ' ':
+		if ' '.join(a[sims[i][0]]) is not ' ' and ' '.join(a[sims[i][0]]) is not '' and ' '.join(a[sims[i][0]]) is not None :
 			question_dict[' '.join(q[sims[i][0]])] = ' '.join(a[sims[i][0]])
 		i += 1
 
@@ -115,7 +120,7 @@ def similarity(query):
 			doc_num = i
 		i += 1
 
-	if ' '.join(q[doc_num]) is not question_dict and a[doc_num] is not ' ':
+	if ' '.join(q[doc_num]) is not question_dict and a[doc_num] is not ' ' and a[doc_num] is not '' and a[doc_num] is not None:
 		question_dict[' '.join(q[doc_num])] = ' '.join(a[doc_num])
 
 	return question_dict

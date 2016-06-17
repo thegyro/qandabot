@@ -206,12 +206,14 @@
 <div class="container">
 
     <h3>
-        Echoo..!<br/>
-
-    </h3>
-    <p>A simple bot to chat to about your issues.<br />
+        Meet Echo!<br/> </h3>
+        <br>
+        <p>
+                A simple bot to chat to about your issues.<br />
                 Be it TurboTax or QuickBooks or Mint, <a href="#">Echo</a> will try its best to come up with an answer.<br/>
+            </p>
 
+    <br>
     
     <div class="col-md-12 col-lg-6">
         <div class="panel">
@@ -241,7 +243,7 @@
     		<!--Widget body-->
     		<div id="demo-chat-body" class="collapse in">
     			<div class="nano has-scrollbar" style="height:380px">
-    				<div class="nano-content pad-all" tabindex="0" style="right: -17px;">
+    				<div class="nano-content pad-all" id="chatbox" tabindex="0" style="right: -17px;">
     					<ul class="list-unstyled media-block">
 
                             
@@ -300,8 +302,6 @@
     <div class="col-md-2 col-lg-2">
     </div>
     <div class="col-md-4 col-lg-4">
-        <br>
-        <br>
         <div class="panel">
             {% if modal %}
                 <a href="#confirmModal" data-toggle="modal" data-target="#confirmModal" class="list-group-item">Click for similar questions!</a>
@@ -324,9 +324,9 @@
               <h4 class="modal-title">Are any of these questions similar to your query?</h4>
             </div>
             <div class="modal-body">
-                {% for q in question_dict %} 
-                    <h5>Q. {{ q }}</h5>
-                    <p>A. {{ question_dict.q }}</p>
+                {% for q, a in question_dict.items %} 
+                    <h5>Question. {{ q }}</h5>
+                    <p>{{ a }}</p>
                     <br>
                 {% endfor %}
                 <hr>
@@ -359,7 +359,7 @@
             <div class="modal-body">
                 <div class="row"> 
                     <div class="col-md-3 col-lg-3">
-                        <a type="button" data-dismiss="modal" class="btn btn-info">Take me to Superbot</a>
+                        <a type="button" data-dismiss="modal" class="btn btn-info">Take me to Superbot!</a>
                     </div>
                     <div class="col-md-2 col-lg-2">
                     </div>
@@ -394,7 +394,8 @@
 <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 <script type="text/javascript">
-	
+	var objDiv = document.getElementById("chatbox");
+    objDiv.scrollTop = objDiv.scrollHeight;
 </script>
 </body>
 </html>
