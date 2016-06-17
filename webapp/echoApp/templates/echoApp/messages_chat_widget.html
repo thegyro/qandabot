@@ -343,7 +343,41 @@
                     <div class="col-md-2 col-lg-2">
                     </div>
                     <div class="col-md-3 col-lg-3">
-                        <a type="button" data-dismiss="modal" class="btn btn-danger" href="#noModal" data-toggle="modal" data-target="#noModal">No</a>
+                        <a type="button" data-dismiss="modal" class="btn btn-danger" href="#linksModal" data-toggle="modal" data-target="#linksModal">No</a>
+                    </div>
+                </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
+<div class="container">
+      <div class="modal fade" id="linksModal" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+                <h4>The following links might be helpful...</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+
+                    {% for link in linkList %} 
+                        <div class="col-md-1 col-lg-1">
+                        </div> 
+                        <a href="{{link}}">{{link}}</a>
+                        <br>
+                    {% endfor %}
+                </div>
+                <hr>
+                <div class="row"> 
+                    <div class="col-md-3 col-lg-3">
+                    </div>
+                    <div class="col-md-3 col-lg-3">
+                     <a type="button" data-dismiss="modal" class="btn btn-warning" href="#noModal" data-toggle="modal" data-target="#noModal">Still not happy?</a>
+                    </div>
                     </div>
                 </div>
             </div>

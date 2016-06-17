@@ -58,8 +58,9 @@ class QASimilarityDoc2Vec:
 		return sim_qanda
 
 if __name__ == "__main__":
-	qa = QASimilarityDoc2Vec(filename={'question':'intuit_questions.txt', 'answer':'intuit_answers.txt'})
-	qa.save_model('Bhargav_cunt.doc2vec')
+	#qa = QASimilarityDoc2Vec(filename={'question':'../data/intuit_questions.txt', 'answer':'../data/intuit_answers.txt'})
+	qa = QASimilarityDoc2Vec(model_name='intuit_temp.doc2vec',filename={'question':'../data/intuit_questions.txt', 'answer':'../data/intuit_answers.txt'})
+	#qa.load_model('Bhargav_cunt.doc2vec')
 	sim_qa = qa.get_most_similar_qa("How to file my taxes", topn=2)
 
 	for s in sim_qa:
