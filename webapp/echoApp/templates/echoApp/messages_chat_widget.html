@@ -324,13 +324,11 @@
               <h4 class="modal-title">Are any of these questions similar to your query?</h4>
             </div>
             <div class="modal-body">
-                
-                <h5>Q. Question</h5>
-                <p>A. Answer</p>
-                <br>
-                <h5>Q. Question</h5>
-                <p>A. Answer</p>
-                <br>
+                {% for q in question_dict %} 
+                    <h5>Q. {{ q }}</h5>
+                    <p>A. {{ question_dict.q }}</p>
+                    <br>
+                {% endfor %}
                 <hr>
                 <h5> Were the questions suggested helpful? </h5>
                 <div class="row"> 
