@@ -42,15 +42,13 @@ def home(request):
 		message_form = MessageForm(request.POST)
 		if message_form.is_valid():
 			question = message_form.cleaned_data['message']
-			if 'tax' in question or 'form' in question:
-				similarity(question)
-
 			question_list.append(question)
 			bot_response = chatbot.get_response(question)
 			question_list.append(bot_response)
-			modal = True
-			if modal:
-				return render(request, 'echoApp/messages_chat_widget.html', {'message_form':message_form, 'question':question, 'bot_response':bot_response, 'question_list':question_list, 'modal':modal})
+			if 'tax' in question or 'form' in question:
+				modal = True
+				question_dict = similarity(question)
+				return render(request, 'echoApp/messages_chat_widget.html', {'message_form':message_form, 'question':question, 'bot_response':bot_response, 'question_list':question_list, 'modal':modal, 'question_dict':question_dict})
 			else:
 				return render(request, 'echoApp/messages_chat_widget.html', {'message_form':message_form, 'question':question, 'bot_response':bot_response, 'question_list':question_list})
 	else:
@@ -97,8 +95,12 @@ def similarity(query):
 	sims = index_tf[vec_query]
 	sims = sorted(enumerate(sims), key=lambda item: -item[1])
 
+	#hardcode top 2
+	question_dict = {}
 	print(' '.join(q[sims[0][0]]), ' '.join(q[sims[1][0]]), ' '.join(q[sims[2][0]]))
 	print(' '.join(a[sims[0][0]]), ' '.join(a[sims[1][0]]), ' '.join(a[sims[2][0]]))
+	question_dict[' '.join(q[sims[0][0]])] = ' '.join(a[sims[0][0]])
+	question_dict[' '.join(q[sims[1][0]])] = ' '.join(a[sims[1][0]])
 	print "\n"
 
 	vec_query = q_lsi[query]
@@ -107,4 +109,8 @@ def similarity(query):
 
 	print(' '.join(q[sims[0][0]]), ' '.join(q[sims[1][0]]), ' '.join(q[sims[2][0]]))
 	print(' '.join(a[sims[0][0]]), ' '.join(a[sims[1][0]]), ' '.join(a[sims[2][0]]))
+	question_dict[' '.join(q[sims[0][0]])] = a[sims[0][0]]
+	question_dict[' '.join(q[sims[1][0]])] = ' '.join(a[sims[1][0]])
+
+	return question_dict
 
