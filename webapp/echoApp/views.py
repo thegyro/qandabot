@@ -99,7 +99,7 @@ def similarity(query):
 	question_dict = {}
 	print(' '.join(q[sims[0][0]]), ' '.join(q[sims[1][0]]), ' '.join(q[sims[2][0]]))
 	print(' '.join(a[sims[0][0]]), ' '.join(a[sims[1][0]]), ' '.join(a[sims[2][0]]))
-	question_dict[' '.join(q[sims[0][0]])] = ' '.join(a[sims[0][0]])
+	question_dict[' '.join(q[sims[2][0]])] = ' '.join(a[sims[2][0]])
 	question_dict[' '.join(q[sims[1][0]])] = ' '.join(a[sims[1][0]])
 	print "\n"
 
