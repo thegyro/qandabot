@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>EchoUP</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../../../static/css/main.css" />
+	</script>
+	</head>
+	
+	
+	<body>
+
+		<div id="left">
+		<!-- Header -->
+			<header id="header">
+				<h1>Echoooo</h1>
+				<p>A simple bot to chat to about your issues.<br />
+				Be it TurboTax or QuickBooks or Mint, <a href="#">Echo</a> will try its best to come up with an answer.<br/>
+			</header>
+
+			<form id="message-form" class="form-horizontal" method="post" action="/"
+                            enctype="multipart/form-data">
+				{% csrf_token %}
+				{{ message_form.message }}
+				<button type="submit" name="submit" class="col-lg-4 btn btn-success">Ask</button>
+			</form>
+
+			<br>
+
+			{% if question %}
+				You: {{ question }}
+			{% endif %}
+			<br>
+			{% if bot_response %}
+				Bot: {{ bot_response }}
+			{% endif %}
+			
+		</div>
+
+		<div id="right">
+			<h3>
+				Bot : Hello..!
+			</h3>
+		</div>
+
+		<footer id="footer">
+				<ul class="icons">
+					<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+					<li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+					<li><a href="#" class="icon fa-github"><span class="label">GitHub</span></a></li>
+					<li><a href="#" class="icon fa-envelope-o"><span class="label">Email</span></a></li>
+				</ul>
+				<ul class="copyright">
+					<li>&copy; Echo</li><li>Credits: <a href="http://html5up.net">HTML5 UP</a></li>
+				</ul>
+		</footer>
+
+
+
+		<!-- Scripts -->
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="../../../static/js/main.js"></script>
+
+	</body>
+</html>
