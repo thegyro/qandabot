@@ -75,42 +75,48 @@ def similarity(query):
 
 	# loading ends
 	query = dictionary.doc2bow(query.lower().split())
-	# vec_query = q_lda[query]
 
-	# max_sim = 10
-	# i = 0
-	# for doc in corpus:
-	# 	sim = hellinger(vec_query, q_lda[doc])
-	# 	if sim < max_sim:
-	# 		max_sim = sim
-	# 		max_doc = doc 
-	# 		doc_num = i
-	# 	i += 1
+	question_dict = {}
 
-	# print(q[doc_num])
-	# print "\n"
-
-
+	# this if for LSI TF IDF
+	i = 0
 	vec_query = lsi_tf[query]
 	sims = index_tf[vec_query]
-	sims = sorted(enumerate(sims), key=lambda item: -item[1])
+	sims = sorted(enumerate(sims), key=lambda item: -item[1])	
+	while len(question_dict) is not 2:
+		if ' '.join(a[sims[i][0]]) is not ' ':
+			question_dict[' '.join(q[sims[i][0]])] = ' '.join(a[sims[i][0]])
+		i += 1
 
-	#hardcode top 2
-	question_dict = {}
-	print(' '.join(q[sims[0][0]]), ' '.join(q[sims[1][0]]), ' '.join(q[sims[2][0]]))
-	print(' '.join(a[sims[0][0]]), ' '.join(a[sims[1][0]]), ' '.join(a[sims[2][0]]))
-	question_dict[' '.join(q[sims[0][0]])] = ' '.join(a[sims[0][0]])
-	question_dict[' '.join(q[sims[1][0]])] = ' '.join(a[sims[1][0]])
-	print "\n"
-
+	# this is for normal LSI
+	i = 0
 	vec_query = q_lsi[query]
 	sims = index[vec_query]
-	sims = sorted(enumerate(sims), key=lambda item: -item[1])
+	sims = sorted(enumerate(sims), key=lambda item: -item[1])	
+	while len(question_dict) is not 4:
+		if ' '.join(q[sims[i][0]]) in question_dict:
+			i += 1
+			continue
 
-	print(' '.join(q[sims[0][0]]), ' '.join(q[sims[1][0]]), ' '.join(q[sims[2][0]]))
-	print(' '.join(a[sims[0][0]]), ' '.join(a[sims[1][0]]), ' '.join(a[sims[2][0]]))
-	question_dict[' '.join(q[sims[0][0]])] = a[sims[0][0]]
-	question_dict[' '.join(q[sims[1][0]])] = ' '.join(a[sims[1][0]])
+		if ' '.join(a[sims[i][0]]) is not ' ':
+			question_dict[' '.join(q[sims[i][0]])] = ' '.join(a[sims[i][0]])
+		i += 1
+
+
+	vec_query = q_lda[query]
+	max_sim = 10
+	i = 0
+
+	for doc in corpus:
+		sim = hellinger(vec_query, q_lda[doc])
+		if sim < max_sim:
+			max_sim = sim
+			max_doc = doc 
+			doc_num = i
+		i += 1
+
+	if ' '.join(q[doc_num]) is not question_dict and a[doc_num] is not ' ':
+		question_dict[' '.join(q[doc_num])] = ' '.join(a[doc_num])
 
 	return question_dict
 
