@@ -44,12 +44,17 @@ def home(request):
 			question = message_form.cleaned_data['message']
 			question_list.append(question)
 			bot_response = chatbot.get_response(question)
-			question_list.append(bot_response)
-			if 'tax' in question or 'form' in question:
+			
+			temp_question = question.lower()
+			tax_words = ['tax', 'form', 'problem', 'issue', 'turbo', 'file', 'return']
+			if [w for w in tax_words if w in temp_question]:
 				modal = True
-				question_dict = similarity(question)
+				bot_response = 'It seems you have a problem with Turbo Tax or filing your taxes. I have had a look at some previous questions, see if they might help!'
+				question_list.append(bot_response)
+				question_dict = similarity(temp_question)
 				return render(request, 'echoApp/messages_chat_widget.html', {'message_form':message_form, 'question':question, 'bot_response':bot_response, 'question_list':question_list, 'modal':modal, 'question_dict':question_dict})
 			else:
+				question_list.append(bot_response)
 				return render(request, 'echoApp/messages_chat_widget.html', {'message_form':message_form, 'question':question, 'bot_response':bot_response, 'question_list':question_list})
 	else:
 		message_form = MessageForm()
@@ -75,42 +80,48 @@ def similarity(query):
 
 	# loading ends
 	query = dictionary.doc2bow(query.lower().split())
-	# vec_query = q_lda[query]
 
-	# max_sim = 10
-	# i = 0
-	# for doc in corpus:
-	# 	sim = hellinger(vec_query, q_lda[doc])
-	# 	if sim < max_sim:
-	# 		max_sim = sim
-	# 		max_doc = doc 
-	# 		doc_num = i
-	# 	i += 1
+	question_dict = {}
 
-	# print(q[doc_num])
-	# print "\n"
-
-
+	# this if for LSI TF IDF
+	i = 0
 	vec_query = lsi_tf[query]
 	sims = index_tf[vec_query]
-	sims = sorted(enumerate(sims), key=lambda item: -item[1])
+	sims = sorted(enumerate(sims), key=lambda item: -item[1])	
+	while len(question_dict) is not 2:
+		if ' '.join(a[sims[i][0]]) is not ' ' and ' '.join(a[sims[i][0]]) is not '' and ' '.join(a[sims[i][0]]) is not None:
+			question_dict[' '.join(q[sims[i][0]])] = ' '.join(a[sims[i][0]])
+		i += 1
 
-	#hardcode top 2
-	question_dict = {}
-	print(' '.join(q[sims[0][0]]), ' '.join(q[sims[1][0]]), ' '.join(q[sims[2][0]]))
-	print(' '.join(a[sims[0][0]]), ' '.join(a[sims[1][0]]), ' '.join(a[sims[2][0]]))
-	question_dict[' '.join(q[sims[2][0]])] = ' '.join(a[sims[2][0]])
-	question_dict[' '.join(q[sims[1][0]])] = ' '.join(a[sims[1][0]])
-	print "\n"
-
+	# this is for normal LSI
+	i = 0
 	vec_query = q_lsi[query]
 	sims = index[vec_query]
-	sims = sorted(enumerate(sims), key=lambda item: -item[1])
+	sims = sorted(enumerate(sims), key=lambda item: -item[1])	
+	while len(question_dict) is not 4:
+		if ' '.join(q[sims[i][0]]) in question_dict:
+			i += 1
+			continue
 
-	print(' '.join(q[sims[0][0]]), ' '.join(q[sims[1][0]]), ' '.join(q[sims[2][0]]))
-	print(' '.join(a[sims[0][0]]), ' '.join(a[sims[1][0]]), ' '.join(a[sims[2][0]]))
-	question_dict[' '.join(q[sims[0][0]])] = a[sims[0][0]]
-	question_dict[' '.join(q[sims[1][0]])] = ' '.join(a[sims[1][0]])
+		if ' '.join(a[sims[i][0]]) is not ' ' and ' '.join(a[sims[i][0]]) is not '' and ' '.join(a[sims[i][0]]) is not None :
+			question_dict[' '.join(q[sims[i][0]])] = ' '.join(a[sims[i][0]])
+		i += 1
+
+
+	vec_query = q_lda[query]
+	max_sim = 10
+	i = 0
+
+	for doc in corpus:
+		sim = hellinger(vec_query, q_lda[doc])
+		if sim < max_sim:
+			max_sim = sim
+			max_doc = doc 
+			doc_num = i
+		i += 1
+
+	if ' '.join(q[doc_num]) is not question_dict and a[doc_num] is not ' ' and a[doc_num] is not '' and a[doc_num] is not None:
+		question_dict[' '.join(q[doc_num])] = ' '.join(a[doc_num])
 
 	return question_dict
 
