@@ -206,12 +206,14 @@
 <div class="container">
 
     <h3>
-        Echoo..!<br/>
-
-    </h3>
-    <p>A simple bot to chat to about your issues.<br />
+        Meet Echo!<br/> </h3>
+        <br>
+        <p>
+                A simple bot to chat to about your issues.<br />
                 Be it TurboTax or QuickBooks or Mint, <a href="#">Echo</a> will try its best to come up with an answer.<br/>
+            </p>
 
+    <br>
     
     <div class="col-md-12 col-lg-6">
         <div class="panel">
@@ -300,8 +302,6 @@
     <div class="col-md-2 col-lg-2">
     </div>
     <div class="col-md-4 col-lg-4">
-        <br>
-        <br>
         <div class="panel">
             {% if modal %}
                 <a href="#confirmModal" data-toggle="modal" data-target="#confirmModal" class="list-group-item">Click for similar questions!</a>
@@ -324,9 +324,9 @@
               <h4 class="modal-title">Are any of these questions similar to your query?</h4>
             </div>
             <div class="modal-body">
-                {% for q in question_dict %} 
-                    <h5>Q. {{ q }}</h5>
-                    <p>A. {{ question_dict.q }}</p>
+                {% for q, a in question_dict.items %} 
+                    <h5>Question. {{ q }}</h5>
+                    <p><h5>Answer.</h5> {{ a }}</p>
                     <br>
                 {% endfor %}
                 <hr>
@@ -359,7 +359,7 @@
             <div class="modal-body">
                 <div class="row"> 
                     <div class="col-md-3 col-lg-3">
-                        <a type="button" data-dismiss="modal" class="btn btn-info">Take me to Superbot</a>
+                        <a type="button" data-dismiss="modal" class="btn btn-info">Take me to Superbot!</a>
                     </div>
                     <div class="col-md-2 col-lg-2">
                     </div>
