@@ -39,7 +39,7 @@ chatbot.train("chatterbot.corpus.english")
 chatbot.train("chatterbot.corpus.english.greetings")
 chatbot.train("chatterbot.corpus.english.conversations")
 
-current_dir = os.getcwd() + '/webapp/echoApp'
+current_dir = os.getcwd() + '/echoApp'  #From the location of 'manage.py'
 print current_dir
 
 qa = question_similarity.QASimilarityDoc2Vec(model_name=current_dir + '/intuit_temp.doc2vec',filename={'question':current_dir +'/intuit_questions.txt', 'answer':current_dir +'/intuit_answers.txt'})
