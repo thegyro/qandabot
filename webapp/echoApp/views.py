@@ -99,7 +99,6 @@ a = pickle.load(answer_file)
 def home(request):
     global chatbot
     global question_list
-    print "here"
     if request.method == 'POST':
         message_form = MessageForm(request.POST)
         if message_form.is_valid():
