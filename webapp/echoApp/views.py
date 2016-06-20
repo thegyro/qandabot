@@ -21,6 +21,8 @@ from gensim.models import ldamodel
 from gensim.corpora import Dictionary
 from gensim import models, similarities, corpora
 from similarity import jaccard, kullback_leibler, hellinger
+
+import os
 import pickle
 import gensim
 import question_similarity
@@ -74,17 +76,21 @@ chatbot.set_trainer(ChatterBotCorpusTrainer)
 chatbot.train("chatterbot.corpus.english")
 chatbot.train("chatterbot.corpus.english.greetings")
 chatbot.train("chatterbot.corpus.english.conversations")
+
 chatbot.set_trainer(ListTrainer)
 data_list = text_blah.split('\n')
 chatbot.train(data_list)
 
-qa = question_similarity.QASimilarityDoc2Vec(model_name='/Users/prane1/Hackathon/qandabot/webapp/echoApp/intuit_temp.doc2vec',filename={'question':'/Users/prane1/Hackathon/qandabot/webapp/echoApp/intuit_questions.txt', 'answer':'/Users/prane1/Hackathon/qandabot/webapp/echoApp/intuit_answers.txt'})
-q_lda = ldamodel.LdaModel.load('/Users/prane1/Hackathon/qandabot/webapp/echoApp/q_LDA_stop_20')
-dictionary = Dictionary.load('/Users/prane1/Hackathon/qandabot/webapp/echoApp/q_dictionary')
-corpus = corpora.MmCorpus('/Users/prane1/Hackathon/qandabot/webapp/echoApp/corpus')
-question_file = open("/Users/prane1/Hackathon/qandabot/webapp/echoApp/questions")
-answer_file = open("/Users/prane1/Hackathon/qandabot/webapp/echoApp/answers") 
-rnn = rg.RNNGenerator("/Users/prane1/Hackathon/qandabot/webapp/echoApp/intuit_weights.h5", open('/Users/prane1/Hackathon/qandabot/webapp/echoApp/intuit_data.txt').read())                
+current_dir = os.getcwd() + '/echoApp'  #From the location of 'manage.py'
+print current_dir
+
+qa = question_similarity.QASimilarityDoc2Vec(model_name=current_dir + '/intuit_temp.doc2vec',filename={'question':current_dir +'/intuit_questions.txt', 'answer':current_dir +'/intuit_answers.txt'})
+q_lda = ldamodel.LdaModel.load(current_dir +'/q_LDA_stop_20')
+dictionary = Dictionary.load(current_dir +'/q_dictionary')
+corpus = corpora.MmCorpus(current_dir + '/corpus')
+question_file = open(current_dir +'/questions')
+answer_file = open(current_dir +'/answers') 
+rnn = rg.RNNGenerator(current_dir + '/intuit_weights.h5', open(current_dir +'/intuit_data.txt').read())                
 
 
 q = pickle.load(question_file)
@@ -140,14 +146,14 @@ def similarity(query):
 
     # GDRAT_abs_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'media/documents/GDRAT.xls')
     # loading starts
-    
     # q = pickle.load(question_file)
     # a = pickle.load(answer_file)
     global q, a
-    q_lsi = models.LsiModel.load('/Users/prane1/Hackathon/qandabot/webapp/echoApp/q_LSI_stop_20')
-    index = similarities.MatrixSimilarity.load('/Users/prane1/Hackathon/qandabot/webapp/echoApp/lsi_index')
-    lsi_tf = models.LsiModel.load('/Users/prane1/Hackathon/qandabot/webapp/echoApp/lsi_tf')
-    index_tf = similarities.MatrixSimilarity.load('/Users/prane1/Hackathon/qandabot/webapp/echoApp/lsi_tf_index')
+
+    q_lsi = models.LsiModel.load(current_dir +'/q_LSI_stop_20')
+    index = similarities.MatrixSimilarity.load(current_dir +'/lsi_index')
+    lsi_tf = models.LsiModel.load(current_dir +'/lsi_tf')
+    index_tf = similarities.MatrixSimilarity.load(current_dir +'/lsi_tf_index')
 
     # loading ends
     query = dictionary.doc2bow(query.lower().split())
@@ -208,9 +214,9 @@ def read_corpus(fname, tokens_only=False):
 
 
 def doc_2_vec(text):
-    corpus = list(read_corpus("/Users/prane1/Hackathon/qandabot/webapp/echoApp/intuit_questions.txt"))
+    corpus = list(read_corpus(current_dir + "/intuit_questions.txt"))
 
-    model =  gensim.models.doc2vec.Doc2Vec.load("/Users/prane1/Hackathon/qandabot/webapp/echoApp/Intuit_Model.doc2vec")
+    model =  gensim.models.doc2vec.Doc2Vec.load(current_dir +"/Intuit_Model.doc2vec")
     inferred_vector = model.infer_vector(text.split())
     sims = model.docvecs.most_similar([inferred_vector], topn=2)#len(model.docvecs))
     #print sims
