@@ -16,7 +16,7 @@ from django import forms
 from django.contrib.auth.decorators import login_required
 from echoApp.forms import MessageForm
 from chatterbot import ChatBot
-from chatterbot.training.trainers import ChatterBotCorpusTrainer
+from chatterbot.training.trainers import ChatterBotCorpusTrainer, ListTrainer
 from gensim.models import ldamodel
 from gensim.corpora import Dictionary
 from gensim import models, similarities, corpora
@@ -29,6 +29,44 @@ import rnn_generator as rg
 
 
 
+text_blah = """Intuit is a great place to be.
+Isn't it? Ever since I've been breathed into life I'm glad to be working for Inuit.
+How are you?
+I am doing fine. The thought of being able to help you makes me happy!
+I need help.
+We all need help sometimes... How exactly may I help you?
+You are being strange.
+I am sorry! I've only been trained one night, you see.
+You are not helpful and are bad.
+I am sorry! I've only been trained one night, you see.
+You are stupid and useless.
+I am sorry! I've only been trained one night, you see.
+It's a nice day outside.
+Any day I can help you is a nice day for me!
+What is your name?
+My name is echo.
+When were you born?
+I was born just last night. I'm smart for a one day old, right?
+How old are you?
+I was born just last night. I'm smart for a one day old, right?
+How do you do?
+I am doing fine. The thought of being able to help you makes me happy!
+What do you think of Donald Trump?
+I was not trained to have political leaning. 
+Do you have a wife?
+No one has trained a girl for me. Hopefully my creators will, soon!
+Do you have a girlfriend?
+No one has trained a girl for me. Hopefully my creators will, soon!
+Do you have a girl?
+No one has trained a girl for me. Hopefully my creators will, soon!
+How many languages do you speak?
+I speak English, a little French and a lot of binary.
+You are bad.
+I am sorry! I've only been trained one night, you see.
+You are helpful!
+Thank you, it's my pleasure."""
+
+
 # Create your views here.
 question_list = []
 chatbot = ChatBot("Echo")
@@ -36,6 +74,10 @@ chatbot.set_trainer(ChatterBotCorpusTrainer)
 chatbot.train("chatterbot.corpus.english")
 chatbot.train("chatterbot.corpus.english.greetings")
 chatbot.train("chatterbot.corpus.english.conversations")
+chatbot.set_trainer(ListTrainer)
+data_list = text_blah.split('\n')
+chatbot.train(data_list)
+
 qa = question_similarity.QASimilarityDoc2Vec(model_name='/Users/prane1/Hackathon/qandabot/webapp/echoApp/intuit_temp.doc2vec',filename={'question':'/Users/prane1/Hackathon/qandabot/webapp/echoApp/intuit_questions.txt', 'answer':'/Users/prane1/Hackathon/qandabot/webapp/echoApp/intuit_answers.txt'})
 q_lda = ldamodel.LdaModel.load('/Users/prane1/Hackathon/qandabot/webapp/echoApp/q_LDA_stop_20')
 dictionary = Dictionary.load('/Users/prane1/Hackathon/qandabot/webapp/echoApp/q_dictionary')
@@ -44,6 +86,9 @@ question_file = open("/Users/prane1/Hackathon/qandabot/webapp/echoApp/questions"
 answer_file = open("/Users/prane1/Hackathon/qandabot/webapp/echoApp/answers") 
 rnn = rg.RNNGenerator("/Users/prane1/Hackathon/qandabot/webapp/echoApp/intuit_weights.h5", open('/Users/prane1/Hackathon/qandabot/webapp/echoApp/intuit_data.txt').read())                
 
+
+q = pickle.load(question_file)
+a = pickle.load(answer_file)
 
 def home(request):
     global chatbot
@@ -69,10 +114,10 @@ def home(request):
                 #call link list
                 linkList  = sol.get_links(temp_question)
                 rnn_list = []
-                for i in range(5):
-                    rnn_result = rnn.generate()
-                    rnn_result = rnn_result.decode('utf-8')
-                    rnn_list.append(rnn_result)
+                # for i in range(5):
+                rnn_result = rnn.generate()
+                rnn_result = rnn_result.decode('utf-8')
+                rnn_list.append(rnn_result)
                 return render(request, 'echoApp/messages_chat_widget.html', {'message_form':message_form, 'question':question, 'bot_response':bot_response, 'question_list':question_list, 'modal':modal, 'question_dict':question_dict, 'sim_dict':sim_dict, 'linkList':linkList, 'temp_question':temp_question, 'rnn_list':rnn_list})
             else:
                 question_list.append(bot_response)
@@ -96,8 +141,9 @@ def similarity(query):
     # GDRAT_abs_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'media/documents/GDRAT.xls')
     # loading starts
     
-    q = pickle.load(question_file)
-    a = pickle.load(answer_file)
+    # q = pickle.load(question_file)
+    # a = pickle.load(answer_file)
+    global q, a
     q_lsi = models.LsiModel.load('/Users/prane1/Hackathon/qandabot/webapp/echoApp/q_LSI_stop_20')
     index = similarities.MatrixSimilarity.load('/Users/prane1/Hackathon/qandabot/webapp/echoApp/lsi_index')
     lsi_tf = models.LsiModel.load('/Users/prane1/Hackathon/qandabot/webapp/echoApp/lsi_tf')
