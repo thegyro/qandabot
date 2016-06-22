@@ -9,7 +9,7 @@ def generate_txt_from_csv(filename, q = True, a = False):
 			if q and a:
 				print question
 				print answer
-			else if a:
+			elif a:
 				print answer
 			else:
 				print question
@@ -17,4 +17,4 @@ def generate_txt_from_csv(filename, q = True, a = False):
 
 
 if __name__ == "__main__":
-	generate_txt_from_csv(sys.argv[1])
+	generate_txt_from_csv(sys.argv[1], q = True, a=False)
