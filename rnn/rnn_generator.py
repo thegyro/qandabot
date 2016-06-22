@@ -66,5 +66,5 @@ class RNNGenerator:
 
 
 if __name__ == "__main__":
-	rnn = RNNGenerator("intuit_weights.h5", open('../data/intuit_data.txt').read())
+	rnn = RNNGenerator("intuit_weights.h5", open('intuit_data.txt').read())
 	print rnn.generate()
