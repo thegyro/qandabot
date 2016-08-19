@@ -3,7 +3,7 @@ A conversational bot for assisting in customer support. Hackathon bot. It's okay
 
 # Dependencies :
 
-1. Django
+1. django
   - Mac : pip install Django
   - Ubuntu : apt-get install python-django
 2. scipy and numpy
